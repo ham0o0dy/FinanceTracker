@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="FinanceTracker.BusinessLogic/FinanceTracker.BusinessLogic.csproj" />
+  <Project Path="FinanceTracker.DataAccess/FinanceTracker.DataAccess.csproj" />
+  <Project Path="FinanceTracker/FinanceTracker.csproj" />
+</Solution>

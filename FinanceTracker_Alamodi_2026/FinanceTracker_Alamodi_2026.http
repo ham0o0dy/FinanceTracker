@@ -1,0 +1,6 @@
+@FinanceTracker_Alamodi_2026_HostAddress = http://localhost:5243
+
+GET {{FinanceTracker_Alamodi_2026_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
