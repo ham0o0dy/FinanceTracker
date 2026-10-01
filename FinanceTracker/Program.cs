@@ -1,6 +1,6 @@
 using FinanceTracker.DataAccess;
-using Microsoft.EntityFrameworkCore;
 using FinanceTracker.DataAccess.Seed;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,24 +10,25 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<FinanceTrackerDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
-builder.Services.AddControllers();
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
-{ 
-    scope.ServiceProvider.GetRequiredService<FinanceTrackerDbContext>().Database.Migrate(); }
-//await SeedData.RunAsync(db);
+{
+    var db = scope.ServiceProvider.GetRequiredService<FinanceTrackerDbContext>();
+    db.Database.Migrate();
+}
 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "FinanceTracker API v1");
+    });
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
