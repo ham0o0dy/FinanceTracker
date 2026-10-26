@@ -1,6 +1,7 @@
 using FinanceTracker.DataAccess;
 using FinanceTracker.DataAccess.Seed;
 using Microsoft.EntityFrameworkCore;
+using FinanceTracker.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,11 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<FinanceTrackerDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
+builder.Services.AddExceptionHandler<ApiExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
+app.UseExceptionHandler();
 
 using (var scope = app.Services.CreateScope())
 {
