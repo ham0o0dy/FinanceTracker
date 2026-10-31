@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FinanceTracker.BusinessLogic.DTOs.Users;
 
-namespace FinanceTracker.BusinessLogic.Services
+namespace FinanceTracker.BusinessLogic.Services;
+
+public interface IUserService
 {
-    internal interface IUserService
-    {
-    }
+    Task<UserDto> GetMeAsync(Guid userId);
+    Task<UserDto> UpdateMeAsync(Guid userId, UpdateUserRequest request);
 }
