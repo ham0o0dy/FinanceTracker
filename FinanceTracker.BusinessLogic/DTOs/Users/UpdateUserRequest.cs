@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace FinanceTracker.BusinessLogic.DTOs.Users
+namespace FinanceTracker.BusinessLogic.DTOs.Users;
+
+public class UpdateUserRequest
 {
-    internal class UpdateUserRequest
-    {
-    }
+    [Required, MinLength(1)]
+    public string Name { get; set; } = null!;
 }
