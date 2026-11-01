@@ -1,4 +1,6 @@
-﻿using FinanceTracker.DataAccess.Entities;
+﻿using System.Globalization;
+using System.Text.Json;
+using FinanceTracker.DataAccess.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,46 +12,149 @@ public static class SeedData
     {
         if (await db.Users.AnyAsync()) return;
 
-        var demoUserId = Guid.Parse("11111111-1111-1111-1111-111111111111");
+        var seed = LoadSeedFile();
+
         var demoUser = new ApplicationUser
         {
-            Id = demoUserId,
-            UserName = "demo@fintracker.local",
-            NormalizedUserName = "DEMO@FINTRACKER.LOCAL",
-            Email = "demo@fintracker.local",
-            NormalizedEmail = "DEMO@FINTRACKER.LOCAL",
+            Id = Guid.Parse(seed.User.Id),
+            UserName = seed.User.Email,
+            NormalizedUserName = seed.User.Email.ToUpperInvariant(),
+            Email = seed.User.Email,
+            NormalizedEmail = seed.User.Email.ToUpperInvariant(),
             EmailConfirmed = true,
-            Name = "Demo User",
+            Name = seed.User.Name,
             CreatedAt = DateTime.UtcNow
         };
         demoUser.PasswordHash = new PasswordHasher<ApplicationUser>()
-            .HashPassword(demoUser, "Demo12345");
-
+            .HashPassword(demoUser, seed.User.Password);
         db.Users.Add(demoUser);
 
-        db.Categories.AddRange(
-            new Category { Id = Guid.Parse("a0000000-0000-0000-0000-000000000001"), Name = "Salary", Type = OperationType.Income },
-            new Category { Id = Guid.Parse("a0000000-0000-0000-0000-000000000002"), Name = "Scholarship", Type = OperationType.Income },
-            new Category { Id = Guid.Parse("a0000000-0000-0000-0000-000000000003"), Name = "Other", Type = OperationType.Income },
-            new Category { Id = Guid.Parse("b0000000-0000-0000-0000-000000000001"), Name = "Food", Type = OperationType.Expense },
-            new Category { Id = Guid.Parse("b0000000-0000-0000-0000-000000000002"), Name = "Restaurants", Type = OperationType.Expense },
-            new Category { Id = Guid.Parse("b0000000-0000-0000-0000-000000000003"), Name = "Medicine", Type = OperationType.Expense },
-            new Category { Id = Guid.Parse("b0000000-0000-0000-0000-000000000004"), Name = "Sport", Type = OperationType.Expense },
-            new Category { Id = Guid.Parse("b0000000-0000-0000-0000-000000000005"), Name = "Taxi", Type = OperationType.Expense },
-            new Category { Id = Guid.Parse("b0000000-0000-0000-0000-000000000006"), Name = "Rent", Type = OperationType.Expense },
-            new Category { Id = Guid.Parse("b0000000-0000-0000-0000-000000000007"), Name = "Investments", Type = OperationType.Expense },
-            new Category { Id = Guid.Parse("b0000000-0000-0000-0000-000000000008"), Name = "Clothes", Type = OperationType.Expense },
-            new Category { Id = Guid.Parse("b0000000-0000-0000-0000-000000000009"), Name = "Fun", Type = OperationType.Expense },
-            new Category { Id = Guid.Parse("b0000000-0000-0000-0000-000000000010"), Name = "Other", Type = OperationType.Expense }
-        );
+        foreach (var c in seed.Categories)
+        {
+            db.Categories.Add(new Category
+            {
+                Id = Guid.Parse(c.Id),
+                UserId = c.IsSystem ? null : demoUser.Id,
+                Name = c.Name,
+                Type = Enum.Parse<OperationType>(c.Type)
+            });
+        }
 
-        db.Accounts.AddRange(
-            new Account { Id = Guid.Parse("c0000000-0000-0000-0000-000000000001"), UserId = demoUserId, Name = "Cash", Currency = "RUB", StartAmount = 5000.00m, CreatedAt = DateTime.UtcNow },
-            new Account { Id = Guid.Parse("c0000000-0000-0000-0000-000000000002"), UserId = demoUserId, Name = "Debit card", Currency = "RUB", StartAmount = 42000.00m, CreatedAt = DateTime.UtcNow },
-            new Account { Id = Guid.Parse("c0000000-0000-0000-0000-000000000003"), UserId = demoUserId, Name = "Savings", Currency = "USD", StartAmount = 1500.00m, CreatedAt = DateTime.UtcNow }
-        );
+        foreach (var a in seed.Accounts)
+        {
+            db.Accounts.Add(new Account
+            {
+                Id = Guid.Parse(a.Id),
+                UserId = demoUser.Id,
+                Name = a.Name,
+                Currency = a.Currency,
+                StartAmount = ParseMoney(a.StartAmount),
+                IsArchived = a.IsArchived,
+                CreatedAt = DateTime.UtcNow
+            });
+        }
+
+        foreach (var o in seed.Operations)
+        {
+            db.Operations.Add(new Operation
+            {
+                Id = Guid.Parse(o.Id),
+                AccountId = Guid.Parse(o.AccountId),
+                CategoryId = Guid.Parse(o.CategoryId),
+                Type = Enum.Parse<OperationType>(o.Type),
+                Amount = ParseMoney(o.Amount),
+                Date = ParseDate(o.Date),
+                Comment = o.Comment,
+                CreatedAt = DateTime.UtcNow
+            });
+        }
+
+        foreach (var t in seed.Transfers)
+        {
+            db.Transfers.Add(new Transfer
+            {
+                Id = Guid.Parse(t.Id),
+                FromAccountId = Guid.Parse(t.FromAccountId),
+                ToAccountId = Guid.Parse(t.ToAccountId),
+                Amount = ParseMoney(t.Amount),
+                Date = ParseDate(t.Date),
+                Comment = t.Comment,
+                CreatedAt = DateTime.UtcNow
+            });
+        }
 
         await db.SaveChangesAsync();
+    }
 
+    private static SeedFile LoadSeedFile()
+    {
+        var assembly = typeof(SeedData).Assembly;
+        var resourceName = assembly.GetManifestResourceNames()
+            .Single(n => n.EndsWith("seed-data.json", StringComparison.OrdinalIgnoreCase));
+
+        using var stream = assembly.GetManifestResourceStream(resourceName)!;
+        return JsonSerializer.Deserialize<SeedFile>(stream,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+    }
+
+    private static decimal ParseMoney(string value) =>
+        decimal.Parse(value, CultureInfo.InvariantCulture);
+
+    private static DateOnly ParseDate(string value) =>
+        DateOnly.ParseExact(value, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+
+    private sealed class SeedFile
+    {
+        public SeedUser User { get; set; } = null!;
+        public List<SeedCategory> Categories { get; set; } = new();
+        public List<SeedAccount> Accounts { get; set; } = new();
+        public List<SeedOperation> Operations { get; set; } = new();
+        public List<SeedTransfer> Transfers { get; set; } = new();
+    }
+
+    private sealed class SeedUser
+    {
+        public string Id { get; set; } = null!;
+        public string Email { get; set; } = null!;
+        public string Name { get; set; } = null!;
+        public string Password { get; set; } = null!;
+    }
+
+    private sealed class SeedCategory
+    {
+        public string Id { get; set; } = null!;
+        public string Name { get; set; } = null!;
+        public string Type { get; set; } = null!;
+        public bool IsSystem { get; set; }
+    }
+
+    private sealed class SeedAccount
+    {
+        public string Id { get; set; } = null!;
+        public string Name { get; set; } = null!;
+        public string Currency { get; set; } = null!;
+        public string StartAmount { get; set; } = null!;
+        public bool IsArchived { get; set; }
+    }
+
+    private sealed class SeedOperation
+    {
+        public string Id { get; set; } = null!;
+        public string AccountId { get; set; } = null!;
+        public string CategoryId { get; set; } = null!;
+        public string Type { get; set; } = null!;
+        public string Amount { get; set; } = null!;
+        public string Date { get; set; } = null!;
+        public string? Comment { get; set; }
+    }
+
+    private sealed class SeedTransfer
+    {
+        public string Id { get; set; } = null!;
+        public string FromAccountId { get; set; } = null!;
+        public string ToAccountId { get; set; } = null!;
+        public string Amount { get; set; } = null!;
+        public string Date { get; set; } = null!;
+        public string? Comment { get; set; }
     }
 }
