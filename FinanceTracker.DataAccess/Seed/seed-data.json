@@ -1,0 +1,596 @@
+{
+  "user": {
+    "id": "11111111-1111-1111-1111-111111111111",
+    "email": "demo@fintracker.local",
+    "name": "Demo User",
+    "password": "Demo12345"
+  },
+  "categories": [
+    {
+      "id": "a0000000-0000-0000-0000-000000000001",
+      "name": "Salary",
+      "type": "Income",
+      "isSystem": true
+    },
+    {
+      "id": "a0000000-0000-0000-0000-000000000002",
+      "name": "Scholarship",
+      "type": "Income",
+      "isSystem": true
+    },
+    {
+      "id": "a0000000-0000-0000-0000-000000000003",
+      "name": "Other",
+      "type": "Income",
+      "isSystem": true
+    },
+    {
+      "id": "b0000000-0000-0000-0000-000000000001",
+      "name": "Food",
+      "type": "Expense",
+      "isSystem": true
+    },
+    {
+      "id": "b0000000-0000-0000-0000-000000000002",
+      "name": "Restaurants",
+      "type": "Expense",
+      "isSystem": true
+    },
+    {
+      "id": "b0000000-0000-0000-0000-000000000003",
+      "name": "Medicine",
+      "type": "Expense",
+      "isSystem": true
+    },
+    {
+      "id": "b0000000-0000-0000-0000-000000000004",
+      "name": "Sport",
+      "type": "Expense",
+      "isSystem": true
+    },
+    {
+      "id": "b0000000-0000-0000-0000-000000000005",
+      "name": "Taxi",
+      "type": "Expense",
+      "isSystem": true
+    },
+    {
+      "id": "b0000000-0000-0000-0000-000000000006",
+      "name": "Rent",
+      "type": "Expense",
+      "isSystem": true
+    },
+    {
+      "id": "b0000000-0000-0000-0000-000000000007",
+      "name": "Investments",
+      "type": "Expense",
+      "isSystem": true
+    },
+    {
+      "id": "b0000000-0000-0000-0000-000000000008",
+      "name": "Clothes",
+      "type": "Expense",
+      "isSystem": true
+    },
+    {
+      "id": "b0000000-0000-0000-0000-000000000009",
+      "name": "Fun",
+      "type": "Expense",
+      "isSystem": true
+    },
+    {
+      "id": "b0000000-0000-0000-0000-000000000010",
+      "name": "Other",
+      "type": "Expense",
+      "isSystem": true
+    }
+  ],
+  "accounts": [
+    {
+      "id": "c0000000-0000-0000-0000-000000000001",
+      "name": "Cash",
+      "currency": "RUB",
+      "startAmount": "5000.00",
+      "isArchived": false,
+      "expectedBalance": "12710.00"
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000002",
+      "name": "Debit card",
+      "currency": "RUB",
+      "startAmount": "42000.00",
+      "isArchived": false,
+      "expectedBalance": "48928.50"
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000003",
+      "name": "Savings",
+      "currency": "USD",
+      "startAmount": "1500.00",
+      "isArchived": false,
+      "expectedBalance": "2055.00"
+    }
+  ],
+  "operations": [
+    {
+      "id": "d0000000-0000-0000-0000-000000000001",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "a0000000-0000-0000-0000-000000000001",
+      "category": "Salary",
+      "type": "Income",
+      "amount": "60000.00",
+      "date": "2026-08-05",
+      "comment": "August salary"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000002",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000006",
+      "category": "Rent",
+      "type": "Expense",
+      "amount": "25000.00",
+      "date": "2026-08-05",
+      "comment": "Rent, August"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000003",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000001",
+      "category": "Food",
+      "type": "Expense",
+      "amount": "3200.50",
+      "date": "2026-08-06",
+      "comment": "Groceries"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000004",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000002",
+      "category": "Restaurants",
+      "type": "Expense",
+      "amount": "1800.00",
+      "date": "2026-08-09",
+      "comment": "Dinner"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000005",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000001",
+      "category": "Food",
+      "type": "Expense",
+      "amount": "2750.00",
+      "date": "2026-08-12",
+      "comment": "Groceries"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000006",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000008",
+      "category": "Clothes",
+      "type": "Expense",
+      "amount": "4990.00",
+      "date": "2026-08-14",
+      "comment": "Sneakers"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000007",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000001",
+      "category": "Food",
+      "type": "Expense",
+      "amount": "3100.25",
+      "date": "2026-08-18",
+      "comment": "Groceries"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000008",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000003",
+      "category": "Medicine",
+      "type": "Expense",
+      "amount": "1200.00",
+      "date": "2026-08-20",
+      "comment": "Pharmacy"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000009",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000007",
+      "category": "Investments",
+      "type": "Expense",
+      "amount": "10000.00",
+      "date": "2026-08-25",
+      "comment": "Index fund"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000010",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "a0000000-0000-0000-0000-000000000001",
+      "category": "Salary",
+      "type": "Income",
+      "amount": "60000.00",
+      "date": "2026-09-05",
+      "comment": "September salary"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000011",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000006",
+      "category": "Rent",
+      "type": "Expense",
+      "amount": "25000.00",
+      "date": "2026-09-05",
+      "comment": "Rent, September"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000012",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000001",
+      "category": "Food",
+      "type": "Expense",
+      "amount": "2980.00",
+      "date": "2026-09-07",
+      "comment": "Groceries"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000013",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000004",
+      "category": "Sport",
+      "type": "Expense",
+      "amount": "3500.00",
+      "date": "2026-09-10",
+      "comment": "Gym membership"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000014",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000002",
+      "category": "Restaurants",
+      "type": "Expense",
+      "amount": "2400.00",
+      "date": "2026-09-13",
+      "comment": "Lunch with friends"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000015",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000001",
+      "category": "Food",
+      "type": "Expense",
+      "amount": "3050.75",
+      "date": "2026-09-17",
+      "comment": "Groceries"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000016",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000009",
+      "category": "Fun",
+      "type": "Expense",
+      "amount": "1500.00",
+      "date": "2026-09-21",
+      "comment": "Cinema"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000017",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000001",
+      "category": "Food",
+      "type": "Expense",
+      "amount": "2600.00",
+      "date": "2026-09-26",
+      "comment": "Groceries"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000018",
+      "accountId": "c0000000-0000-0000-0000-000000000002",
+      "account": "Debit card",
+      "categoryId": "b0000000-0000-0000-0000-000000000007",
+      "category": "Investments",
+      "type": "Expense",
+      "amount": "10000.00",
+      "date": "2026-09-28",
+      "comment": "Index fund"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000019",
+      "accountId": "c0000000-0000-0000-0000-000000000001",
+      "account": "Cash",
+      "categoryId": "b0000000-0000-0000-0000-000000000005",
+      "category": "Taxi",
+      "type": "Expense",
+      "amount": "450.00",
+      "date": "2026-08-02",
+      "comment": null
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000020",
+      "accountId": "c0000000-0000-0000-0000-000000000001",
+      "account": "Cash",
+      "categoryId": "b0000000-0000-0000-0000-000000000001",
+      "category": "Food",
+      "type": "Expense",
+      "amount": "780.00",
+      "date": "2026-08-10",
+      "comment": "Market"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000021",
+      "accountId": "c0000000-0000-0000-0000-000000000001",
+      "account": "Cash",
+      "categoryId": "a0000000-0000-0000-0000-000000000003",
+      "category": "Other",
+      "type": "Income",
+      "amount": "3000.00",
+      "date": "2026-08-15",
+      "comment": "Birthday gift"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000022",
+      "accountId": "c0000000-0000-0000-0000-000000000001",
+      "account": "Cash",
+      "categoryId": "b0000000-0000-0000-0000-000000000005",
+      "category": "Taxi",
+      "type": "Expense",
+      "amount": "520.00",
+      "date": "2026-08-22",
+      "comment": null
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000023",
+      "accountId": "c0000000-0000-0000-0000-000000000001",
+      "account": "Cash",
+      "categoryId": "b0000000-0000-0000-0000-000000000009",
+      "category": "Fun",
+      "type": "Expense",
+      "amount": "1200.00",
+      "date": "2026-08-29",
+      "comment": "Concert"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000024",
+      "accountId": "c0000000-0000-0000-0000-000000000001",
+      "account": "Cash",
+      "categoryId": "b0000000-0000-0000-0000-000000000005",
+      "category": "Taxi",
+      "type": "Expense",
+      "amount": "610.00",
+      "date": "2026-09-03",
+      "comment": null
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000025",
+      "accountId": "c0000000-0000-0000-0000-000000000001",
+      "account": "Cash",
+      "categoryId": "b0000000-0000-0000-0000-000000000001",
+      "category": "Food",
+      "type": "Expense",
+      "amount": "900.00",
+      "date": "2026-09-11",
+      "comment": "Market"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000026",
+      "accountId": "c0000000-0000-0000-0000-000000000001",
+      "account": "Cash",
+      "categoryId": "b0000000-0000-0000-0000-000000000010",
+      "category": "Other",
+      "type": "Expense",
+      "amount": "350.00",
+      "date": "2026-09-19",
+      "comment": "Haircut"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000027",
+      "accountId": "c0000000-0000-0000-0000-000000000001",
+      "account": "Cash",
+      "categoryId": "b0000000-0000-0000-0000-000000000005",
+      "category": "Taxi",
+      "type": "Expense",
+      "amount": "480.00",
+      "date": "2026-09-24",
+      "comment": null
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000028",
+      "accountId": "c0000000-0000-0000-0000-000000000003",
+      "account": "Savings",
+      "categoryId": "a0000000-0000-0000-0000-000000000002",
+      "category": "Scholarship",
+      "type": "Income",
+      "amount": "300.00",
+      "date": "2026-08-01",
+      "comment": "Scholarship, August"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000029",
+      "accountId": "c0000000-0000-0000-0000-000000000003",
+      "account": "Savings",
+      "categoryId": "a0000000-0000-0000-0000-000000000002",
+      "category": "Scholarship",
+      "type": "Income",
+      "amount": "300.00",
+      "date": "2026-09-01",
+      "comment": "Scholarship, September"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000030",
+      "accountId": "c0000000-0000-0000-0000-000000000003",
+      "account": "Savings",
+      "categoryId": "b0000000-0000-0000-0000-000000000010",
+      "category": "Other",
+      "type": "Expense",
+      "amount": "45.00",
+      "date": "2026-09-15",
+      "comment": "Bank fee"
+    }
+  ],
+  "transfers": [
+    {
+      "id": "e0000000-0000-0000-0000-000000000001",
+      "fromAccountId": "c0000000-0000-0000-0000-000000000002",
+      "from": "Debit card",
+      "toAccountId": "c0000000-0000-0000-0000-000000000001",
+      "to": "Cash",
+      "amount": "5000.00",
+      "date": "2026-08-07",
+      "comment": "Cash withdrawal"
+    },
+    {
+      "id": "e0000000-0000-0000-0000-000000000002",
+      "fromAccountId": "c0000000-0000-0000-0000-000000000002",
+      "from": "Debit card",
+      "toAccountId": "c0000000-0000-0000-0000-000000000001",
+      "to": "Cash",
+      "amount": "5000.00",
+      "date": "2026-09-08",
+      "comment": "Cash withdrawal"
+    }
+  ],
+  "expected": {
+    "rubSeptemberAllAccounts": {
+      "query": {
+        "currency": "RUB",
+        "from": "2026-09-01",
+        "to": "2026-09-30"
+      },
+      "totalIncome": "60000.00",
+      "totalExpense": "53370.75",
+      "net": "6629.25",
+      "byCategory": [
+        {
+          "type": "Income",
+          "category": "Salary",
+          "amount": "60000.00"
+        },
+        {
+          "type": "Expense",
+          "category": "Rent",
+          "amount": "25000.00"
+        },
+        {
+          "type": "Expense",
+          "category": "Investments",
+          "amount": "10000.00"
+        },
+        {
+          "type": "Expense",
+          "category": "Food",
+          "amount": "9530.75"
+        },
+        {
+          "type": "Expense",
+          "category": "Sport",
+          "amount": "3500.00"
+        },
+        {
+          "type": "Expense",
+          "category": "Restaurants",
+          "amount": "2400.00"
+        },
+        {
+          "type": "Expense",
+          "category": "Fun",
+          "amount": "1500.00"
+        },
+        {
+          "type": "Expense",
+          "category": "Taxi",
+          "amount": "1090.00"
+        },
+        {
+          "type": "Expense",
+          "category": "Other",
+          "amount": "350.00"
+        }
+      ]
+    },
+    "debitCardAugust": {
+      "query": {
+        "accountId": "c0000000-0000-0000-0000-000000000002",
+        "from": "2026-08-01",
+        "to": "2026-08-31"
+      },
+      "totalIncome": "60000.00",
+      "totalExpense": "52040.75",
+      "net": "7959.25",
+      "byCategory": [
+        {
+          "type": "Income",
+          "category": "Salary",
+          "amount": "60000.00"
+        },
+        {
+          "type": "Expense",
+          "category": "Rent",
+          "amount": "25000.00"
+        },
+        {
+          "type": "Expense",
+          "category": "Investments",
+          "amount": "10000.00"
+        },
+        {
+          "type": "Expense",
+          "category": "Food",
+          "amount": "9050.75"
+        },
+        {
+          "type": "Expense",
+          "category": "Clothes",
+          "amount": "4990.00"
+        },
+        {
+          "type": "Expense",
+          "category": "Restaurants",
+          "amount": "1800.00"
+        },
+        {
+          "type": "Expense",
+          "category": "Medicine",
+          "amount": "1200.00"
+        }
+      ]
+    },
+    "savingsAugSep": {
+      "query": {
+        "accountId": "c0000000-0000-0000-0000-000000000003",
+        "from": "2026-08-01",
+        "to": "2026-09-30"
+      },
+      "totalIncome": "600.00",
+      "totalExpense": "45.00",
+      "net": "555.00",
+      "byCategory": [
+        {
+          "type": "Income",
+          "category": "Scholarship",
+          "amount": "600.00"
+        },
+        {
+          "type": "Expense",
+          "category": "Other",
+          "amount": "45.00"
+        }
+      ]
+    }
+  }
+}

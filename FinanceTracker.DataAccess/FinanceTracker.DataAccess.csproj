@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <EmbeddedResource Include="Seed\seed-data.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.12">
       <PrivateAssets>all</PrivateAssets>

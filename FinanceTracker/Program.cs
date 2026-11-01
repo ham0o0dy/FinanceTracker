@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using FinanceTracker.DataAccess.Seed;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +68,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<FinanceTrackerDbContext>();
     db.Database.Migrate();
+    await SeedData.RunAsync(db);
 }
 
 app.UseExceptionHandler();
