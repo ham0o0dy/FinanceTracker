@@ -1,0 +1,82 @@
+@baseUrl = https://localhost:7255
+
+### Login (demo user)
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "demo@fintracker.local", "password": "Demo12345" }
+
+### Accounts with balances (expect Cash 12710.00, Debit card 48928.50, Savings 2055.00)
+GET {{baseUrl}}/api/accounts?includeArchived=false
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### Create an account (expect 201)
+# @name newAccount
+POST {{baseUrl}}/api/accounts
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{ "name": "Travel", "currency": "EUR", "startAmount": 0.00 }
+
+### Currency outside the allowed list (expect 400)
+POST {{baseUrl}}/api/accounts
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{ "name": "Bad", "currency": "ABC", "startAmount": 0.00 }
+
+### R7: change currency of a used account (expect 409)
+PUT {{baseUrl}}/api/accounts/c0000000-0000-0000-0000-000000000001
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{ "name": "Cash", "currency": "USD", "startAmount": 5000.00 }
+
+### R6: delete an account that has history (expect 409)
+DELETE {{baseUrl}}/api/accounts/c0000000-0000-0000-0000-000000000001
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### Archive the new account (expect 200)
+PATCH {{baseUrl}}/api/accounts/{{newAccount.response.body.$.id}}/archive
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{ "isArchived": true }
+
+### Delete the new empty account (expect 204)
+DELETE {{baseUrl}}/api/accounts/{{newAccount.response.body.$.id}}
+Authorization: Bearer {{login.response.body.$.accessToken}}
+### Categories (expect 13)
+GET {{baseUrl}}/api/categories
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### Create a category (expect 201)
+# @name newCategory
+POST {{baseUrl}}/api/categories
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{ "name": "Books", "type": "Expense" }
+
+### R10: same name again (expect 409)
+POST {{baseUrl}}/api/categories
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{ "name": "books", "type": "Expense" }
+
+### R10: repeating a system category name (expect 409)
+POST {{baseUrl}}/api/categories
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{ "name": "Food", "type": "Expense" }
+
+### R11: delete a system category (expect 403)
+DELETE {{baseUrl}}/api/categories/b0000000-0000-0000-0000-000000000001
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### Delete the new category (expect 204)
+DELETE {{baseUrl}}/api/categories/{{newCategory.response.body.$.id}}
+Authorization: Bearer {{login.response.body.$.accessToken}}
