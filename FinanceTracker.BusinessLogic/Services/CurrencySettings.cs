@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿namespace FinanceTracker.BusinessLogic.Services;
 
-namespace FinanceTracker.BusinessLogic.Services
+// Holds the accepted currency codes read from configuration (Currencies:Allowed).
+public class CurrencySettings(string[] allowed)
 {
-    internal class CurrencySettings
-    {
-    }
+    public string[] Allowed { get; } = allowed;
 }

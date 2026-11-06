@@ -3,14 +3,13 @@ using FinanceTracker.BusinessLogic.Exceptions;
 using FinanceTracker.DataAccess;
 using FinanceTracker.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace FinanceTracker.BusinessLogic.Services;
 
-public class AccountService(FinanceTrackerDbContext db, IConfiguration configuration) : IAccountService
+public class AccountService(FinanceTrackerDbContext db, CurrencySettings currencySettings) : IAccountService
 {
-    private string[] AllowedCurrencies =>
-        configuration.GetSection("Currencies:Allowed").GetChildren().Select(c => c.Value!).ToArray();
+    // Accepted currency codes come from configuration (Currencies:Allowed in appsettings.json).
+    private string[] AllowedCurrencies => currencySettings.Allowed;
 
     public async Task<List<AccountDto>> GetAllAsync(Guid userId, bool includeArchived)
     {
@@ -108,7 +107,8 @@ public class AccountService(FinanceTrackerDbContext db, IConfiguration configura
         if (account is null)
             throw new NotFoundApiException("Account not found.");
 
-        // R15: another user's resource -> 403, not 404
+        // R15: another user's resource -> 403, not 404 (so existence isn't leaked either way
+        // beyond "it exists but isn't yours" vs "it doesn't exist at all" per the brief).
         if (account.UserId != userId)
             throw new ForbiddenApiException("This account belongs to another user.");
 

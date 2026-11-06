@@ -9,8 +9,14 @@ namespace FinanceTracker.BusinessLogic.Services;
 
 public class OperationService(FinanceTrackerDbContext db) : IOperationService
 {
+    // Largest value that fits the numeric(18,2) database column.
+    private const decimal MaxAmount = 9_999_999_999_999_999.99m;
+
     public async Task<PagedResult<OperationDto>> GetAllAsync(Guid userId, OperationQueryParameters query)
     {
+        if (query.From is not null && query.To is not null && query.From > query.To)
+            throw new BadRequestApiException("'from' cannot be later than 'to'.");
+
         var baseQuery = db.Operations
             .Include(o => o.Account)
             .Where(o => o.Account.UserId == userId);
@@ -18,8 +24,12 @@ public class OperationService(FinanceTrackerDbContext db) : IOperationService
         if (query.AccountId is not null)
             baseQuery = baseQuery.Where(o => o.AccountId == query.AccountId);
 
-        if (!string.IsNullOrEmpty(query.Type) && Enum.TryParse<OperationType>(query.Type, out var type))
+        if (!string.IsNullOrEmpty(query.Type))
+        {
+            if (!Enum.TryParse<OperationType>(query.Type, true, out var type) || !Enum.IsDefined(type))
+                throw new BadRequestApiException("Type must be 'Income' or 'Expense'.");
             baseQuery = baseQuery.Where(o => o.Type == type);
+        }
 
         if (query.CategoryId is not null)
             baseQuery = baseQuery.Where(o => o.CategoryId == query.CategoryId);
@@ -29,9 +39,6 @@ public class OperationService(FinanceTrackerDbContext db) : IOperationService
 
         if (query.To is not null)
             baseQuery = baseQuery.Where(o => o.Date <= query.To);
-
-        if (query.From is not null && query.To is not null && query.From > query.To)
-            throw new BadRequestApiException("'from' cannot be later than 'to'.");
 
         baseQuery = query.SortBy switch
         {
@@ -149,6 +156,8 @@ public class OperationService(FinanceTrackerDbContext db) : IOperationService
             throw new BadRequestApiException("Amount must be greater than zero.");
         if (decimal.Round(amount, 2) != amount)
             throw new BadRequestApiException("Amount can have at most 2 decimal places.");
+        if (amount > MaxAmount)
+            throw new BadRequestApiException("Amount is too large.");
 
         // R3: operation type must match category type.
         if (requestedType != categoryType)

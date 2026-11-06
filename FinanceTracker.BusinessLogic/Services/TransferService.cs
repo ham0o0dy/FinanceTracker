@@ -63,6 +63,8 @@ public class TransferService(FinanceTrackerDbContext db) : ITransferService
             throw new BadRequestApiException("Amount must be greater than zero.");
         if (decimal.Round(request.Amount, 2) != request.Amount)
             throw new BadRequestApiException("Amount can have at most 2 decimal places.");
+        if (request.Amount > 9_999_999_999_999_999.99m)
+            throw new BadRequestApiException("Amount is too large.");
 
         // R4: date not later than today.
         if (request.Date > DateOnly.FromDateTime(DateTime.UtcNow))
