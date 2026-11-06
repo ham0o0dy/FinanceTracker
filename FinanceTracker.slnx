@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/requests/">
+    <File Path="FinanceTracker.http" />
+    <File Path="test.http" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
   </Folder>
