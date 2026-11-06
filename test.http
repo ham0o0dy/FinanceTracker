@@ -1,0 +1,130 @@
+@baseUrl = https://localhost:7255
+
+### Login (demo user)
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "demo@fintracker.local",
+  "password": "Demo12345"
+}
+
+### 1. Operations, first page
+GET {{baseUrl}}/api/operations
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### 2. Cash operations, biggest first
+GET {{baseUrl}}/api/operations?accountId=c0000000-0000-0000-0000-000000000001&sortBy=amountDesc&pageSize=5
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### 3. Create an expense operation
+# @name newOp
+POST {{baseUrl}}/api/operations
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{
+  "accountId": "c0000000-0000-0000-0000-000000000002",
+  "categoryId": "b0000000-0000-0000-0000-000000000001",
+  "type": "Expense",
+  "amount": 1250.00,
+  "date": "2026-10-05",
+  "comment": "Groceries"
+}
+
+### 4. Debit card balance after creating
+GET {{baseUrl}}/api/accounts/c0000000-0000-0000-0000-000000000002
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### 5. Get the operation
+GET {{baseUrl}}/api/operations/{{newOp.response.body.$.id}}
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### 6. Update the amount to 1300.00
+PUT {{baseUrl}}/api/operations/{{newOp.response.body.$.id}}
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{
+  "accountId": "c0000000-0000-0000-0000-000000000002",
+  "categoryId": "b0000000-0000-0000-0000-000000000001",
+  "type": "Expense",
+  "amount": 1300.00,
+  "date": "2026-10-05",
+  "comment": "Groceries"
+}
+
+### 7. R3: wrong category type
+POST {{baseUrl}}/api/operations
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{
+  "accountId": "c0000000-0000-0000-0000-000000000002",
+  "categoryId": "a0000000-0000-0000-0000-000000000001",
+  "type": "Expense",
+  "amount": 10.00,
+  "date": "2026-10-05"
+}
+
+### 8. R4: date in the future
+POST {{baseUrl}}/api/operations
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{
+  "accountId": "c0000000-0000-0000-0000-000000000002",
+  "categoryId": "b0000000-0000-0000-0000-000000000001",
+  "type": "Expense",
+  "amount": 10.00,
+  "date": "2027-01-01"
+}
+
+### 9. R2: three decimals
+POST {{baseUrl}}/api/operations
+Authorization: Bearer {{login.response.body.$.accessToken}}
+Content-Type: application/json
+
+{
+  "accountId": "c0000000-0000-0000-0000-000000000002",
+  "categoryId": "b0000000-0000-0000-0000-000000000001",
+  "type": "Expense",
+  "amount": 10.123,
+  "date": "2026-10-05"
+}
+
+### 10. Delete the operation
+DELETE {{baseUrl}}/api/operations/{{newOp.response.body.$.id}}
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### 11. Debit card balance after deleting
+GET {{baseUrl}}/api/accounts/c0000000-0000-0000-0000-000000000002
+Authorization: Bearer {{login.response.body.$.accessToken}}
+### S1. RUB, September, all accounts
+GET {{baseUrl}}/api/statistics?currency=RUB&from=2026-09-01&to=2026-09-30&groupBy=day
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### S2. Debit card, August
+GET {{baseUrl}}/api/statistics?accountId=c0000000-0000-0000-0000-000000000002&from=2026-08-01&to=2026-08-31
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### S3. Savings, August to September
+GET {{baseUrl}}/api/statistics?accountId=c0000000-0000-0000-0000-000000000003&from=2026-08-01&to=2026-09-30
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### S4. RUB, August to September, grouped by month
+GET {{baseUrl}}/api/statistics?currency=RUB&from=2026-08-01&to=2026-09-30&groupBy=month
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### S5. R16: both accountId and currency
+GET {{baseUrl}}/api/statistics?currency=RUB&accountId=c0000000-0000-0000-0000-000000000002&from=2026-09-01&to=2026-09-30
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### S6. R16: neither accountId nor currency
+GET {{baseUrl}}/api/statistics?from=2026-09-01&to=2026-09-30
+Authorization: Bearer {{login.response.body.$.accessToken}}
+
+### S7. R16: period longer than 366 days
+GET {{baseUrl}}/api/statistics?currency=RUB&from=2025-01-01&to=2026-09-30
+Authorization: Bearer {{login.response.body.$.accessToken}}
